@@ -1,7 +1,7 @@
 import { Button, InputLabel, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../config";
 
@@ -9,7 +9,7 @@ const labelStyles = { mb: 1, mt: 2, fontSize: "24px", fontWeight: "bold" };
 
 const BlogDetail = () => {
   const navigate = useNavigate();
-  const [blog, setBlog] = useState();
+
   const id = useParams().id;
   console.log(id);
   const [inputs, setInputs] = useState({});
@@ -19,22 +19,7 @@ const BlogDetail = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  const fetchDetails = async () => {
-    const res = await axios
-      .get(`${config.BASE_URL}/api/blogs/${id}`)
-      .catch((err) => console.log(err));
-    const data = await res.data;
-    return data;
-  };
-  useEffect(() => {
-    fetchDetails().then((data) => {
-      setBlog(data.blog);
-      setInputs({
-        title: data.blog.title,
-        description: data.blog.description,
-      });
-    });
-  }, [id]);
+
   const sendRequest = async () => {
     const res = await axios
       .put(`${config.BASE_URL}/api/blogs/update/${id}`, {
@@ -46,7 +31,7 @@ const BlogDetail = () => {
     const data = await res.data;
     return data;
   };
-  console.log(blog);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
